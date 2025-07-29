@@ -1,24 +1,18 @@
-import Tesseract from 'tesseract.js';
+export async function solveImageCaptcha(imageElement) {
+  // کپچای تصویری رو تحلیل کن
+  const canvas = document.createElement('canvas');
+  canvas.width = imageElement.width;
+  canvas.height = imageElement.height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(imageElement, 0, 0);
 
-export async function solveImageCaptcha(imageElement, lang = 'fas+eng') {
-  try {
-    // تبدیل تصویر به Blob یا Canvas
-    const imageData = imageElement.src;
+  const imageData = canvas.toDataURL();
+  const text = await fakeOCR(imageData);
+  return text;
+}
 
-    const result = await Tesseract.recognize(
-      imageData,
-      lang,
-      {
-        logger: m => console.log(`[OCR] ${m.status}: ${m.progress}`)
-      }
-    );
-
-    const cleanedText = result.data.text.trim();
-    console.log('[OCR Result]', cleanedText);
-    return cleanedText;
-
-  } catch (error) {
-    console.error('[OCR Error]', error);
-    return null;
-  }
+async function fakeOCR(dataURL) {
+  // فرضی، قابل جایگزینی با Tesseract یا API
+  console.log('[ImageSolver] تحلیل تصویر:', dataURL.slice(0, 50));
+  return 'demo123';
 }
