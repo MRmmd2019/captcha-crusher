@@ -14,3 +14,10 @@ document.getElementById('test').addEventListener('click', () => {
     });
   });
 });
+
+document.getElementById('history').addEventListener('click', () => {
+  chrome.storage.local.get('history', (data) => {
+    console.table(data.history);
+    alert(`📜 ${data.history.length} کپچا ثبت شده`);
+  });
+});
